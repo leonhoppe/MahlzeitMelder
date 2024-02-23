@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Mahlzeit Melder
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" center>
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mahlzeit Melder</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <form>
+      <ion-input type="text" placeholder="Nachricht schreiben" #message></ion-input>
+      <ion-input type="file" #file></ion-input>
+    </form>
+
+    <ion-button (click)="sendMahlzeit(message, file)">Mahlzeit melden</ion-button>
+  </div>
+</ion-content>
