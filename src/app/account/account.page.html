@@ -1,15 +1,54 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Account
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [scrollY]="false">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large">Account</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <section [hidden]="!loginVisible">
+    <ion-card>
+      <ion-list lines="none">
+        <ion-list-header>
+          <ion-label style="font-size: 1.5rem;">Anmelden</ion-label>
+        </ion-list-header>
+
+        <ion-item>
+          <ion-input label="E-Mail*" labelPlacement="floating" type="emain" placeholder="kackwurst@gmail.com" required #email />
+        </ion-item>
+
+        <ion-item>
+          <ion-input label="Passwort*" labelPlacement="floating" type="password" placeholder="***********" required #passwd />
+        </ion-item>
+
+        <ion-button (click)="login(email.value.toString(), passwd.value.toString(), alert)" id="login">Anmelden</ion-button>
+        <ion-alert #alert
+                   header="Login fehlgeschlagen!"
+                   message="Benutzername oder Passwort ist falsch"
+                   [buttons]="['Okay']"
+        />
+      </ion-list>
+    </ion-card>
+  </section>
+
+  <section [hidden]="!accountVisible">
+    <ion-card>
+      <img alt="Snus" src="/assets/snus.webp" />
+      <ion-card-header>
+        <ion-card-title>{{account?.name}}</ion-card-title>
+        <ion-card-subtitle>{{account?.email}}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-button fill="outline" (click)="logout()">Ausloggen</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </section>
 </ion-content>
