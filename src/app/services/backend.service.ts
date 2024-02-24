@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import PocketBase, {RecordModel} from 'pocketbase'
+import PocketBase from 'pocketbase'
 import {Mahlzeit} from "./mahlzeit";
 import {environment} from "../../environments/environment";
 
@@ -36,8 +36,10 @@ export class BackendService {
   }
 
   public async deletePushSubscription() {
-    await this.pocketbase.collection('push_subscriptions').delete(localStorage.getItem('push_id'));
-    localStorage.removeItem('push_id');
+    try {
+      await this.pocketbase.collection('push_subscriptions').delete(localStorage.getItem('push_id'));
+      localStorage.removeItem('push_id');
+    } catch {}
   }
 
   public async uploadMahlzeit(message: string | undefined, file: File | undefined) {

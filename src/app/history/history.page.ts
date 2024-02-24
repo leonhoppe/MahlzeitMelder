@@ -12,6 +12,7 @@ import {
 import {Mahlzeit} from "../services/mahlzeit";
 import {BackendService} from "../services/backend.service";
 import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-history',
@@ -21,11 +22,17 @@ import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonListHeader, IonLabel, IonItem, IonCard, NgForOf, IonButton, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, NgIf, NgOptimizedImage]
 })
 export class HistoryPage {
-  constructor(public backend: BackendService) {
-    backend.getMahlzeiten();
-  }
+  constructor(public backend: BackendService, private router: Router) {}
 
   public createImageUri(mahlzeit: Mahlzeit): string {
     return this.backend.pocketbase.baseUrl + "/api/files/mahlzeiten/" + mahlzeit.id + "/" + mahlzeit.file;
+  }
+
+  public async ionViewDidEnter() {
+    if (!this.backend.isLoggedIn()) {
+      await this.router.navigate(["/tabs/account"]);
+    }
+
+    await this.backend.getMahlzeiten();
   }
 }

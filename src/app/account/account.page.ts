@@ -57,7 +57,7 @@ export class AccountPage {
   }
 
   public async logout() {
-    await this.subscription.unsubscribe();
+    await this.subscription?.unsubscribe();
     await this.backend.deletePushSubscription();
     await this.backend.logout();
 
@@ -66,23 +66,25 @@ export class AccountPage {
   }
 
   private async setupPushNotifications() {
-    const registration = await navigator.serviceWorker.ready;
+    try {
+      const registration = await navigator.serviceWorker.ready;
 
-    let subscription = await registration.pushManager.getSubscription();
+      let subscription = await registration.pushManager.getSubscription();
 
-    if (!subscription) {
-      const response = await fetch(location.origin + "/vapid");
-      const vapidKey = (await response.json()).publicKey;
+      if (!subscription) {
+        const response = await fetch(location.origin + "/vapid");
+        const vapidKey = (await response.json()).publicKey;
 
-      subscription = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: this.urlBase64ToUint8Array(vapidKey)
-      });
+        subscription = await registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: this.urlBase64ToUint8Array(vapidKey)
+        });
 
-      await this.backend.registerPushSubscription(subscription);
-    }
+        await this.backend.registerPushSubscription(subscription);
+      }
 
-    this.subscription = subscription;
+      this.subscription = subscription;
+    } catch {}
   }
 
   private urlBase64ToUint8Array(base64String: string): Uint8Array {

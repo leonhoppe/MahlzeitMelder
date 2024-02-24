@@ -20,9 +20,11 @@ import {Router} from "@angular/router";
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonGrid, IonRow, IonCol, IonInput, IonAlert, IonCard, IonItem, IonList, IonLabel, IonListHeader],
 })
 export class HomePage {
-  constructor(private backend: BackendService, router: Router) {
-    if (!backend.isLoggedIn()) {
-      router.navigate(["/tabs/account"]);
+  constructor(private backend: BackendService, private router: Router) {}
+
+  public async ionViewDidEnter() {
+    if (!this.backend.isLoggedIn()) {
+      await this.router.navigate(["/tabs/account"]);
     }
   }
 
