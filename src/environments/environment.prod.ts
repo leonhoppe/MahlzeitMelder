@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backend: location.origin + "/backend"
+  backend: "https://mahlzeitapi.leon-hoppe.de"
 };

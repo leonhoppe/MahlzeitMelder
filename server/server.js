@@ -26,10 +26,8 @@ app.get('/vapid', (req, res) => {
 });
 
 app.post('/notification', async (req, res) => {
-  const data = await req.json();
-
-  for (let subscription of data.subscriptions) {
-    webPush.sendNotification(subscription, data.payload, {
+  for (let subscription of req.body.subscriptions) {
+    webPush.sendNotification(subscription.subscription, req.body.payload, {
       TTL: 0
     });
   }

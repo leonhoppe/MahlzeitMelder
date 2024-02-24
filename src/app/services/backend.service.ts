@@ -50,14 +50,13 @@ export class BackendService {
     let subscriptions = await this.pocketbase.collection('push_subscriptions').getFullList();
     subscriptions = subscriptions.filter(sub => sub['user'] !== this.pocketbase.authStore.model['id']);
 
-    const notifyData = {
-      subscriptions: subscriptions,
-      payload: this.pocketbase.authStore.model['name'] + " mahlzeitet jetzt!"
-    };
     await fetch(location.origin + "/notification", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(notifyData)
+      body: JSON.stringify({
+        subscriptions: subscriptions,
+        payload: this.pocketbase.authStore.model['name'] + " mahlzeitet jetzt!"
+      })
     });
   }
 
