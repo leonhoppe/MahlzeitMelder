@@ -33,7 +33,6 @@ export class HomePage {
     const file = (await filesInput.getInputElement()).files;
 
     await this.backend.uploadMahlzeit(message, file[0] || undefined);
-    await this.backend.getMahlzeiten();
     form.reset();
     await alert.present();
   }

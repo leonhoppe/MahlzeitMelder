@@ -44,16 +44,16 @@ export class AccountPage {
   }
 
   public async login(email: string, password: string, alert: IonAlert) {
-    try {
-      await this.backend.login(email, password);
-      await this.setupPushNotifications();
-      this.account = this.backend.pocketbase.authStore.model;
-      this.loginVisible = false;
-      this.accountVisible = true;
-
-    } catch {
+    const success = await this.backend.login(email, password);
+    if (!success) {
       await alert.present();
+      return;
     }
+
+    await this.setupPushNotifications();
+    this.account = this.backend.pocketbase.authStore.model;
+    this.loginVisible = false;
+    this.accountVisible = true;
   }
 
   public async logout() {
