@@ -20,7 +20,7 @@
 
     <ion-item *ngFor="let mahlzeit of backend.mahlzeitCache">
       <ion-card>
-        <img alt="Mahlzeit Bild" [src]="createImageUri(mahlzeit)" *ngIf="mahlzeit.file !== ''"/>
+        <img alt="Mahlzeit Bild" [src]="createImageUri(mahlzeit)" *ngIf="mahlzeit.file !== ''" loading="lazy"/>
         <ion-card-header>
           <ion-card-title>{{mahlzeit.user}}</ion-card-title>
           <ion-card-subtitle>hat gemahlzeitet am {{mahlzeit.created.toLocaleString()}}</ion-card-subtitle>
@@ -32,4 +32,6 @@
       </ion-card>
     </ion-item>
   </ion-list>
+
+  <ion-loading message="Mahlzeiten werden geladen..." #loading/>
 </ion-content>

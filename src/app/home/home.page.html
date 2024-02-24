@@ -27,13 +27,14 @@
         <ion-input type="file" accept="image/*" #file></ion-input>
       </ion-item>
 
-      <ion-button (click)="sendMahlzeit(message, file, alert, form)">Senden</ion-button>
+      <ion-button (click)="sendMahlzeit(message, file, alert, form, loading)">Senden</ion-button>
+      <ion-loading message="Mahlzeit wird gespeichert..." #loading/>
       <ion-alert
         #alert
         header="Mahlzeit!"
         message="Deine Mahlzeit wurde an alle Benutzer gemeldet."
         [buttons]="['Okay']"
-      ></ion-alert>
+      />
     </ion-list>
   </form>
 </ion-content>

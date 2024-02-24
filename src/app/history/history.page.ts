@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -7,7 +7,7 @@ import {
   IonList,
   IonListHeader,
   IonLabel,
-  IonItem, IonCard, IonButton, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle
+  IonItem, IonCard, IonButton, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonLoading
 } from '@ionic/angular/standalone';
 import {Mahlzeit} from "../services/mahlzeit";
 import {BackendService} from "../services/backend.service";
@@ -19,9 +19,11 @@ import {Router} from "@angular/router";
   templateUrl: 'history.page.html',
   styleUrls: ['history.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonListHeader, IonLabel, IonItem, IonCard, NgForOf, IonButton, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, NgIf, NgOptimizedImage]
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonListHeader, IonLabel, IonItem, IonCard, NgForOf, IonButton, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, NgIf, NgOptimizedImage, IonLoading]
 })
 export class HistoryPage {
+  @ViewChild('loading') public loading: IonLoading;
+
   constructor(public backend: BackendService, private router: Router) {}
 
   public createImageUri(mahlzeit: Mahlzeit): string {
@@ -33,6 +35,8 @@ export class HistoryPage {
       await this.router.navigate(["/tabs/account"]);
     }
 
+    await this.loading.present();
     await this.backend.getMahlzeiten();
+    await this.loading.dismiss();
   }
 }

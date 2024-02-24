@@ -16,7 +16,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
-  IonCardContent, IonButtons
+  IonCardContent, IonButtons, IonLoading
 } from '@ionic/angular/standalone';
 import {BackendService} from "../services/backend.service";
 
@@ -25,7 +25,7 @@ import {BackendService} from "../services/backend.service";
   templateUrl: 'account.page.html',
   styleUrls: ['account.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonLabel, IonList, IonItem, IonListHeader, IonText, IonButton, IonAlert, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButtons],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonLabel, IonList, IonItem, IonListHeader, IonText, IonButton, IonAlert, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButtons, IonLoading],
 })
 export class AccountPage {
   public loginVisible: boolean = false;
@@ -33,18 +33,23 @@ export class AccountPage {
   public account: any = undefined;
   private subscription: PushSubscription = undefined;
 
-  constructor(public backend: BackendService) {
-    if (!backend.isLoggedIn()) {
+  constructor(public backend: BackendService) {}
+
+  public async ionViewDidEnter() {
+    if (!this.backend.isLoggedIn()) {
       this.loginVisible = true;
     }else {
       this.account = this.backend.pocketbase.authStore.model;
       this.accountVisible = true;
-      this.setupPushNotifications();
+      await this.setupPushNotifications();
     }
   }
 
-  public async login(email: string, password: string, alert: IonAlert) {
+  public async login(email: string, password: string, alert: IonAlert, loading: IonLoading) {
+    await loading.present();
     const success = await this.backend.login(email, password);
+    await loading.dismiss();
+
     if (!success) {
       await alert.present();
       return;

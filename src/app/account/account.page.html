@@ -28,7 +28,8 @@
           <ion-input label="Passwort*" labelPlacement="floating" type="password" placeholder="***********" required #passwd />
         </ion-item>
 
-        <ion-button (click)="login(email.value.toString(), passwd.value.toString(), alert)" id="login">Anmelden</ion-button>
+        <ion-button (click)="login(email.value.toString(), passwd.value.toString(), alert, loading)" id="login">Anmelden</ion-button>
+        <ion-loading message="Einloggen" #loading/>
         <ion-alert #alert
                    header="Login fehlgeschlagen!"
                    message="Benutzername oder Passwort ist falsch"
