@@ -18,7 +18,7 @@
       <ion-label style="font-size: 1.5rem;">Mahlzeit Verlauf</ion-label>
     </ion-list-header>
 
-    <ion-item *ngFor="let mahlzeit of backend.mahlzeitCache">
+    <ion-item *ngFor="let mahlzeit of mahlzeiten">
       <ion-card>
         <img alt="Mahlzeit Bild" [src]="createImageUri(mahlzeit)" *ngIf="mahlzeit.file !== ''" loading="lazy"/>
         <ion-card-header>
@@ -26,11 +26,22 @@
           <ion-card-subtitle>hat gemahlzeitet am {{mahlzeit.created.toLocaleString()}}</ion-card-subtitle>
         </ion-card-header>
 
-        <ion-card-content *ngIf="mahlzeit.message !== ''">
+        <ion-card-content>
           {{mahlzeit.message}}
+
+          <div class="stars">
+            <img ngSrc="/assets/star.svg" alt="star" width="15" height="15" *ngIf="mahlzeit.rating >= 1">
+            <img ngSrc="/assets/star.svg" alt="star" width="15" height="15" *ngIf="mahlzeit.rating >= 2">
+            <img ngSrc="/assets/star.svg" alt="star" width="15" height="15" *ngIf="mahlzeit.rating >= 3">
+            <img ngSrc="/assets/star.svg" alt="star" width="15" height="15" *ngIf="mahlzeit.rating >= 4">
+            <img ngSrc="/assets/star.svg" alt="star" width="15" height="15" *ngIf="mahlzeit.rating >= 5">
+          </div>
         </ion-card-content>
       </ion-card>
     </ion-item>
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)" *ngIf="backend.totalMahlzeitCount === mahlzeiten.length && backend.totalMahlzeitCount > 0">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
   </ion-list>
 
   <ion-loading message="Mahlzeiten werden geladen..." #loading/>

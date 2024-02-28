@@ -7,4 +7,5 @@ export interface Mahlzeit {
   user: string;
   message: string;
   file: string;
+  rating: number;
 }

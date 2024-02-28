@@ -1,0 +1,19 @@
+form {
+  margin-top: 20vh;
+  padding: 5vw;
+}
+
+ion-button {
+  margin-inline: 20%;
+}
+
+.stars {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 15px;
+}
+
+.star-grey {
+  fill: #6B6B6B;
+}

@@ -18,7 +18,7 @@ import {
   IonCardSubtitle,
   IonCardContent, IonButtons, IonLoading
 } from '@ionic/angular/standalone';
-import {BackendService} from "../services/backend.service";
+import {BackendService} from "../../services/backend.service";
 
 @Component({
   selector: 'app-account',

@@ -8,7 +8,7 @@ import {environment} from "../../environments/environment";
 })
 export class BackendService {
   public pocketbase: PocketBase;
-  public mahlzeitCache: Mahlzeit[] = [];
+  public totalMahlzeitCount: number = -1;
 
   constructor() {
     this.pocketbase = new PocketBase(environment.backend);
@@ -48,11 +48,12 @@ export class BackendService {
     } catch {}
   }
 
-  public async uploadMahlzeit(message: string | undefined, file: File | undefined) {
+  public async uploadMahlzeit(message: string | undefined, file: File | undefined, rating: number) {
     await this.pocketbase.collection("mahlzeiten").create({
       user: this.pocketbase.authStore.model['id'],
       message: message,
-      file: file
+      file: file,
+      rating: rating
     });
 
     try {
@@ -70,14 +71,17 @@ export class BackendService {
     }catch {}
   }
 
-  public async getMahlzeiten(): Promise<Mahlzeit[]> {
-    const records = await this.pocketbase.collection<Mahlzeit>('mahlzeiten').getFullList({
+  public async getMahlzeiten(page: number): Promise<Mahlzeit[]> {
+    const records = await this.pocketbase.collection<Mahlzeit>('mahlzeiten').getList(page, 10, {
       sort: '-created'
     });
+    const mahlzeiten = records.items;
+    this.totalMahlzeitCount = records.totalItems;
+
 
     const users = await this.pocketbase.collection('users').getFullList();
 
-    for (let mahlzeit of records) {
+    for (let mahlzeit of mahlzeiten) {
       mahlzeit.created = new Date(mahlzeit.created);
       mahlzeit.updated = new Date(mahlzeit.updated);
 
@@ -87,7 +91,6 @@ export class BackendService {
       }
     }
 
-    this.mahlzeitCache = records;
-    return records;
+    return mahlzeiten;
   }
 }

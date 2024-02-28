@@ -27,6 +27,16 @@
         <ion-input type="file" accept="image/*" #file></ion-input>
       </ion-item>
 
+      <ion-item>
+        <div class="stars">
+          <app-star [color]="rating >= 1 ? '#ED8A19' : '#6B6B6B'" (click)="starClicked(1)" />
+          <app-star [color]="rating >= 2 ? '#ED8A19' : '#6B6B6B'" (click)="starClicked(2)" />
+          <app-star [color]="rating >= 3 ? '#ED8A19' : '#6B6B6B'" (click)="starClicked(3)" />
+          <app-star [color]="rating >= 4 ? '#ED8A19' : '#6B6B6B'" (click)="starClicked(4)" />
+          <app-star [color]="rating >= 5 ? '#ED8A19' : '#6B6B6B'" (click)="starClicked(5)" />
+        </div>
+      </ion-item>
+
       <ion-button (click)="sendMahlzeit(message, file, alert, form, loading)">Senden</ion-button>
       <ion-loading message="Mahlzeit wird gespeichert..." #loading/>
       <ion-alert
