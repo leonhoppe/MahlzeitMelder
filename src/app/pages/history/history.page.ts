@@ -32,6 +32,8 @@ import {Router} from "@angular/router";
 export class HistoryPage {
   @ViewChild('loading') public loading: IonLoading;
   public mahlzeiten: Mahlzeit[] = [];
+  public reachedEnd = false;
+  private loaded: boolean = false;
   private currentPage: number = 1;
 
   constructor(public backend: BackendService, private router: Router) {}
@@ -48,10 +50,17 @@ export class HistoryPage {
     await this.loading.present();
     this.mahlzeiten =  await this.backend.getMahlzeiten(this.currentPage);
     await this.loading.dismiss();
+    this.loaded = true;
   }
 
   public async loadMore(event: any) {
+    if (!this.loaded) return;
     this.currentPage++;
-    this.mahlzeiten.push(...(await this.backend.getMahlzeiten(this.currentPage)));
+    const records = await this.backend.getMahlzeiten(this.currentPage);
+    if (records.length < this.backend.PER_PAGE) {
+      this.reachedEnd = true;
+    }
+
+    this.mahlzeiten.push(...records);
   }
 }

@@ -8,7 +8,7 @@ import {environment} from "../../environments/environment";
 })
 export class BackendService {
   public pocketbase: PocketBase;
-  public totalMahlzeitCount: number = -1;
+  public readonly PER_PAGE: number = 10;
 
   constructor() {
     this.pocketbase = new PocketBase(environment.backend);
@@ -72,11 +72,10 @@ export class BackendService {
   }
 
   public async getMahlzeiten(page: number): Promise<Mahlzeit[]> {
-    const records = await this.pocketbase.collection<Mahlzeit>('mahlzeiten').getList(page, 10, {
+    const records = await this.pocketbase.collection<Mahlzeit>('mahlzeiten').getList(page, this.PER_PAGE, {
       sort: '-created'
     });
     const mahlzeiten = records.items;
-    this.totalMahlzeitCount = records.totalItems;
 
 
     const users = await this.pocketbase.collection('users').getFullList();
